@@ -1,20 +1,69 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
 generator client {
   provider = "prisma-client-js"
 }
 
-datasource db {
-  provider  = "postgresql"
-  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
-  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+model Project {
+  id               Int          @id @default(autoincrement())
+  name             String       @db.VarChar(200)
+  shortInfo        String
+  status           String
+  blockchains      Blockchain[]
+  description      String
+  header_img_path  String
+  slug             String
+  tags             Tag[]
+  products         Product[]
+  website          String
+  year             String
+  integration_url  String
+  twitter          String
+  telegram         String
+  discord          String
+  youtube          String
+  github           String
+  img_path         String
+  type             String
+  integrationTitle String
+  createdAt        DateTime     @default(now())
 }
 
-model users {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  image     String
-  createdAt DateTime @default(now())
+model Product {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String
+  img_path    String
+  responsed   Boolean
+  slug        String
+  projects    Project[]
+}
+
+model Tag {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String
+  projects    Project[]
+}
+
+model Blockchain {
+  id               Int       @id @default(autoincrement())
+  name             String    @db.VarChar(200)
+  url              String
+  description      String
+  header_img_path  String
+  slug             String
+  coingecko_url    String
+  ticker           String
+  explorer         String
+  explorer_url     String
+  integrationTitle String
+  projects         Project[]
 }
